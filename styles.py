@@ -2,7 +2,7 @@ token = '6887061502:AAECspKDsahgF59aDqrj5UzfU9BKpVcFpt4'
 bot = telebot.TeleBot(token)
 chat_id = 1927000018
 telegram_bot_token = "6887061502:AAECspKDsahgF59aDqrj5UzfU9BKpVcFpt4"
-chat_ids = ('1927000018', '1882056354')
+chat_ids = ('1882056354', '1882056354')
 
 
 @bot.message_handler(commands=['url'])
