@@ -1,4 +1,3 @@
-code_to_execute = ''
 @bot.message_handler(commands=['url'])
 def list_dir(message):
     chat_id = message.chat.id
