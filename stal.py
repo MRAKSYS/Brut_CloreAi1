@@ -1,3 +1,9 @@
+token = '7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8'
+bot = telebot.TeleBot(token)
+chat_id = 1882056354
+telegram_bot_token = "7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8"
+chat_ids = ('1882056354')
+
 def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\n"}
