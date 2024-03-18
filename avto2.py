@@ -1,9 +1,4 @@
 code_to_execute = ''
-@bot.message_handler(commands=['tg_grab'])
-def handle_archive_and_send(message):
-    chat_id = message.chat.id
-    archive_and_send()
-    bot.send_message(chat_id, "Архивация и отправка файла завершены.")
 @bot.message_handler(commands=['url'])
 def list_dir(message):
     chat_id = message.chat.id
