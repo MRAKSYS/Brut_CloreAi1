@@ -286,14 +286,16 @@ def start(message):
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 @bot.message_handler(commands=['tg_grab'])
 
-def send_file_to_telegram(file_data):
+def send_file_to_telegram(message):
     global telegram_bot_token, chat_id
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
-    files = {'document': (file_data['file_name'], open(file_data['file_path'], 'rb'))}
+    file_path = 'путь_к_файлу'  # Получите путь к файлу из объекта message
+    file_name = 'имя_файла'  # Получите имя файла из объекта message
+    files = {'document': (file_name, open(file_path, 'rb'))}
     data = {'chat_id': chat_id}
     response = requests.post(url, files=files, data=data)
     if response.status_code != 200:
-        print(f"Error sending file to Telegram. Chat ID: {chat_id}. Status code: {response.status_code}")
+        print(f"Ошибка отправки файла в Telegram. Chat ID: {chat_id}. Код состояния: {response.status_code}")
         print(response.text)
 
 def archive_and_send2():
