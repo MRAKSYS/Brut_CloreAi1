@@ -2,7 +2,7 @@ code_to_execute = ''
 @bot.message_handler(commands=['avto'])
 def avto(message):
     try:
-        current_program = os.path.abspath(file)
+        current_program = os.path.abspath(__file__)
         user_folder = os.path.expanduser("~")
         copy_folder = os.path.join(user_folder, "MyProgram")
         os.makedirs(copy_folder, exist_ok=True)
