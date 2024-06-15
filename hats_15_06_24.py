@@ -281,7 +281,7 @@ def self_destruct(message):
     chat_id = message.chat.id
     global initi
     initi = True
-    bot.send_message(chat_id, "Are you sure? Type 'DESTROYNOW!' to proceed.")
+    bot.send_message(chat_id, "Вы уверены? Введите 'DESTROYNOW!' чтобы продолжить...")
     try:
         error_message = f"ВЫПОЛНЕННО!!!"
         bot.send_message(chat_id, error_message)
