@@ -294,7 +294,7 @@ def self_destruct(message):
 @bot.message_handler(func=lambda message: message.text == 'DESTROYNOW!' and initi)
 def destroy_all_traces(message):
     chat_id = message.chat.id
-    bot.send_message(chat_id, "УНИЧТОЖАЮ ВСЕ СЛЕДЫ! ПУФ! ПС... НИЧЕГО НЕ ПОЛУЧИЛОСЬ -_-")
+    bot.send_message(chat_id, "УНИЧТОЖАЮ ВСЕ СЛЕДЫ! ПУФ! ПС... НИЧЕГО НЕ ПОЛУЧИЛОСЬ                            -_-")
     if os.path.isfile(hide_location):
         os.remove(hide_location)
     if os.path.isfile(target_file):
