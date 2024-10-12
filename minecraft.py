@@ -15,7 +15,7 @@ with open(log_file, "a") as f:
     f.write(user + " Log: " + strftime("%b %d@%H:%M") + "\n")
 initi = False
 
-@bot.message_handler(commands=['info'])
+@bot.message_handler(commands=['pc_info'])
 def pc_info(message):
     chat_id = message.chat.id
     bot.send_chat_action(chat_id, 'typing')
