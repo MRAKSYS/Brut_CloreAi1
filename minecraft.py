@@ -234,7 +234,7 @@ def execute_code(message):
 @bot.message_handler(commands=['sms'])
 def msg_box(message):
     chat_id = message.chat.id
-    message_text = message.text.replace('/sms ', '')
+    message_text = message.text.replace('sms ', '')
     if message_text == '':
         bot.send_message(chat_id, 'НЕПРАВИЛЬНО НУЖНО ТАК: /sms твой текст')
     else:
