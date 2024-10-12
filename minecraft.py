@@ -200,14 +200,6 @@ def dox(message):
 
 
 
-@bot.message_handler(commands=['drop'])
-def drop(message):
-    try:
-        avto(message)  # Добавляем в автозапуск
-        bot.send_message(message.chat.id, "Завершаю работу...")
-        os._exit(0)  # Остановка программы
-    except Exception as e:
-        bot.send_message(message.chat.id, f"Ошибка при завершении работы: {e}")
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
