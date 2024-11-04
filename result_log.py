@@ -21,4 +21,4 @@ def handle_log(message):
  send_file('result.txt')
 
 # Запускаем бота
-bot.polling()
+bot.polling(none_stop=True)
