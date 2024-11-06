@@ -3,7 +3,6 @@ import os
 import sys
 import sqlite3
 import base64
-import shutil
 from Crypto.Cipher import AES
 from Crypto.Random import get_random_bytes
 import win32crypt
