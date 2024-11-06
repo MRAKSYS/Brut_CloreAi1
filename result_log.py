@@ -1,9 +1,6 @@
 import subprocess
 import os
 import sys
-import sqlite3
-from Crypto.Cipher import AES
-from Crypto.Random import get_random_bytes
 import win32crypt
 import tkinter
 import telebot
